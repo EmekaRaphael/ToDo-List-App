@@ -118,7 +118,7 @@ app.get('/:customListName', async function(req, res) {
   }
 });
 
-app.post('/', function(req, res) {
+app.post('/', async function(req, res) {
   const itemName = req.body.newItem;
   const listName = req.body.list;
 
@@ -126,44 +126,35 @@ app.post('/', function(req, res) {
     name: itemName
   });
 
-  if (listName === 'Today') {
-    // Save item to the default list (Today)
-    item.save()
-      .then(() => {
-        // Redirect to the home page after successful save
-        res.redirect('/');
-      })
-      .catch(err => {
-        // Handle the error, send an error response to the client
-        res.status(500).send('Error occurred while saving item to the default list.');
-      });
-  } else {
-    // Save item to a custom list
-    List.findOne({ name: listName })
-      .then(function(foundList) {
-        if (foundList) {
-          foundList.items.push(item);
-          return foundList.save();
-        } else {
-          // Create a new custom list if it doesn't exist
-          const newList = new List({
-            name: listName,
-            items: [item]
-          });
-          return newList.save();
-        }
-      })
-      .then(function(savedList) {
-        // Redirect to the custom list page after successful save
-        res.redirect('/' + listName);
-      })
-      .catch(function(err) {
-        // Handle the error, send an error response to the client
-        res.status(500).send('Error occurred while saving item to the custom list.');
-      });
+  try {
+    if (listName === 'Today') {
+      // Save item to the default list (Today)
+      await item.save();
+      // Redirect to the home page after successful save
+      res.redirect('/');
+    } else {
+      // Save item to a custom list
+      let foundList = await List.findOne({ name: listName });
+      if (!foundList) {
+        // Create a new custom list if it doesn't exist
+        const newList = new List({
+          name: listName,
+          items: [item]
+        });
+        foundList = await newList.save();
+      } else {
+        foundList.items.push(item);
+        foundList = await foundList.save();
+      }
+      // Redirect to the custom list page after successful save
+      res.redirect('/' + listName);
+    }
+  } catch (err) {
+    // Handle the error, send an error response to the client
+    console.error(err);
+    res.status(500).send('Error occurred while saving item.');
   }
 });
-
 
 app.post('/delete', function(req, res) {
   const checkedItemId = req.body.checkbox;
