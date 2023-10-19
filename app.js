@@ -1,9 +1,9 @@
 // Import required packages and modules
-import express from 'express';
-import mongoose from 'mongoose';
-import _ from 'lodash';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
+const express = require('express');
+const mongoose = require('mongoose');
+const _ = require('lodash');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
 
 dotenv.config(); // Load environment variables from .env file
 
