@@ -13,6 +13,7 @@ h1 {
 .box {
   max-width: 400px;
   margin: 50px auto;
+  margin-top: 15%;
   background: white;
   border-radius: 5px;
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
