@@ -188,6 +188,18 @@ app.post('/delete', function(req, res) {
   }
 });
 
+app.use((err, req, res, next) => {
+  // Error handling logic
+  const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+});
+
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Server started on port ${port}!!`);
 });
