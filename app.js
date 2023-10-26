@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config(); // Load environment variables from .env file
 
 const app = express(); // Initialize Express application
-const port = process.env.PORT // Set the port for the server
+const port = process.env.PORT; // Set the port for the server
 
 app.set('view engine', 'ejs'); // Set EJS as the view engine
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
