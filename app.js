@@ -13,7 +13,7 @@ app.set('view engine', 'ejs'); // Set EJS as the view engine
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(express.static('public')); // Serve static files from the 'public' directory
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_TODOLIST_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }); // Connect to MongoDB using the provided URI
